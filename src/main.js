@@ -21,49 +21,68 @@ class CanvasThumbnail extends React.Component {
     constructor (props){
         super(props);
         this.resize = 0.25;
+        this.jumpEvent = this.jumpEvent.bind(this);
     }
 
     componentDidMount(){
         const canvas = this.refs.canvas;
-        this.ctx = canvas.getContext('2d');
-    }
-   
-    componentDidUpdate(){
+        const ctx = canvas.getContext('2d');
         const {clientWidth, clientHeight} = this.props.video;
-        this.refs.canvas.width = clientWidth;
-        this.refs.canvas.height = clientHeight;
-        
-        this.ctx.drawImage(
-            this.props.video, 0, 0, clientWidth*this.resize, clientHeight*this.resize
-        );
+        const w = clientWidth*this.resize;
+        const h = clientHeight*this.resize;
+        this.refs.canvas.width = w;
+        this.refs.canvas.height = h;
+        ctx.drawImage( this.props.video, 0, 0, w, h );
+    }
+
+    jumpEvent(){
+        this.props.jumpClick(this.props.id);
     }
 
     render (){
-        return <canvas ref="canvas" onClick={this.props.jumpClick}/>;
+        return <canvas ref="canvas" onClick={this.jumpEvent}/>;
     }
 }
+
+const ThumbnailList = props => {
+    const thumbnails = props.listClips.map( (clip, index) => (
+        <CanvasThumbnail
+            key={index.toString()}
+            id={index}
+            video={props.video}
+            clip={clip}
+            jumpClick={props.jumpClick} 
+        />
+    ));
+
+    return  <div>{ thumbnails }</div>;
+};
 
 class App extends React.Component {
     constructor (props){
         super(props);
         this.shoot = this.shoot.bind(this);
         this.jumpClick = this.jumpClick.bind(this);
-        this.state = {};
+        this.state = { listClips: [] };
         this.videoref = React.createRef();
     }
 
     shoot(){
-        const video = this.videoref.current;
-    
-        this.setState({
-            video,
-            start: video.currentTime
-        });
+        if(!this.video){
+            this.video = this.videoref.current;
+        }
+
+        this.setState( state => ({
+            listClips: [
+                ...state.listClips,
+                ...[{start: this.video.currentTime}]
+            ]
+        }));
     }
 
-
-    jumpClick(){
-        this.videoref.current.currentTime = this.state.start;
+    jumpClick(ThumbnailId){
+        const clips = this.state.listClips;
+        this.video.currentTime = clips[ThumbnailId].start;
     }
 
     render (){
@@ -78,9 +97,10 @@ class App extends React.Component {
                 <div>
                     <button onClick={this.shoot}>Capture</button>
                 </div>
-                <CanvasThumbnail 
-                    video={this.state.video} 
-                    jumpClick={this.jumpClick}
+                <ThumbnailList
+                    video={this.video}
+                    listClips={this.state.listClips}
+                    jumpClick={this.jumpClick} 
                 />
             </div>
         );
