@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import VideoPlayer from './videoPlayer.js';
 import Thumbnails from './thumbnails.js';
+import styles from './styles.css';
 
 class VideoApp extends React.Component {
     constructor (props){
@@ -36,23 +37,25 @@ class VideoApp extends React.Component {
 
     render (){
         return (
-            <div>
-                <VideoPlayer 
-                    videoref={this.videoref}
-                    src={this.props.videoSrc}
-                    onLoadedData={this.onLoadedData}
-                    width='800px'
-                    start='10'
-                    end='50'
-                />
-                <div>
-                    <button onClick={this.shoot}>Capture</button>
-                </div>
+            <div className={styles.container}>
                 <Thumbnails
                     video={this.video}
                     clips={this.props.clips}
                     jumpClick={this.jumpClick} 
                 />
+                <div>
+                    <VideoPlayer
+                        videoref={this.videoref}
+                        src={this.props.videoSrc}
+                        onLoadedData={this.onLoadedData}
+                        width='800px'
+                        start='10'
+                        end='50'
+                    />
+                    <div>
+                        <button onClick={this.shoot}>Capture</button>
+                    </div>
+                </div>
             </div>
         );
     }

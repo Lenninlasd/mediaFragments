@@ -1,10 +1,11 @@
 import React from 'react';
+import styles from './thumbnails.css';
 
 class CanvasThumbnail extends React.Component {
 
     constructor (props){
         super(props);
-        this.resize = 0.125;
+        this.resize = 0.2;
         this.jumpEvent = this.jumpEvent.bind(this);
     }
 
@@ -25,9 +26,11 @@ class CanvasThumbnail extends React.Component {
 
     render (){
         return (
-            <div style={{display: 'inline-block'}}>
-                <canvas ref="canvas" onClick={this.jumpEvent}/>
-                <div>{this.props.clip.start}</div>
+            <div className={styles.thumbnail}>
+                <div className={styles.label}>
+                    {Math.floor(this.props.clip.start)}
+                </div>
+                <canvas className={styles.canvas} ref="canvas" onClick={this.jumpEvent}/>
             </div>
         );
     }
@@ -44,5 +47,5 @@ export default props => {
         />
     ));
 
-    return  <div>{ thumbnails }</div>;
+    return  <div className={styles.thumbnails}>{ thumbnails }</div>;
 };
