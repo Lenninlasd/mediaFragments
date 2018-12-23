@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+const VIDEO_SRC = '../sintel_trailer-480p.mp4';
 
 const VideoPlayer = props => {
     const t = `#t=${props.start},${props.end}`;
@@ -20,7 +21,7 @@ class CanvasThumbnail extends React.Component {
 
     constructor (props){
         super(props);
-        this.resize = 0.25;
+        this.resize = 0.125;
         this.jumpEvent = this.jumpEvent.bind(this);
     }
 
@@ -40,7 +41,12 @@ class CanvasThumbnail extends React.Component {
     }
 
     render (){
-        return <canvas ref="canvas" onClick={this.jumpEvent}/>;
+        return (
+            <div style={{display: 'inline-block'}}>
+                <canvas ref="canvas" onClick={this.jumpEvent}/>
+                <div>{this.props.clip.start}</div>
+            </div>
+        );
     }
 }
 
@@ -63,8 +69,15 @@ class App extends React.Component {
         super(props);
         this.shoot = this.shoot.bind(this);
         this.jumpClick = this.jumpClick.bind(this);
+        this.onLoadedData = this.onLoadedData.bind(this);
         this.state = { listClips: [] };
         this.videoref = React.createRef();
+    }
+    
+    onLoadedData(){
+        if(!this.state.listClips.length){
+            this.shoot();
+        }
     }
 
     shoot(){
@@ -81,8 +94,10 @@ class App extends React.Component {
     }
 
     jumpClick(ThumbnailId){
-        const clips = this.state.listClips;
-        this.video.currentTime = clips[ThumbnailId].start;
+        const start = this.state.listClips[ThumbnailId].start;
+        this.video.setAttribute('src', `${VIDEO_SRC}#t=${start},${start+10}`)
+        this.video.load();
+        this.video.play();
     }
 
     render (){
@@ -90,9 +105,11 @@ class App extends React.Component {
             <div>
                 <VideoPlayer 
                     videoref={this.videoref}
-                    src='../sintel_trailer-480p.mp4' 
-                    onLoadedData={this.shoot}
-                    width='400px'
+                    src={VIDEO_SRC}
+                    onLoadedData={this.onLoadedData}
+                    width='800px'
+                    start='10'
+                    end='50'
                 />
                 <div>
                     <button onClick={this.shoot}>Capture</button>
