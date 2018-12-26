@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
+import PropTypes from 'prop-types';
 
 import VideoPlayer from './videoPlayer.js';
 import Thumbnails from './thumbnails.js';
 import AddClip from './clipForm.js';
-import styles from './styles.css';
+import styles from '../styles/app.css';
 
 class VideoApp extends React.Component {
     constructor (props){
@@ -94,6 +94,21 @@ class VideoApp extends React.Component {
             </div>
         );
     }
+}
+
+VideoApp.propTypes = {
+    videoSrc: PropTypes.string.isRequired,
+    addClip: PropTypes.func.isRequired,
+    updateClip: PropTypes.func.isRequired,
+    removeClip: PropTypes.func.isRequired,
+    setCurrentClip: PropTypes.func.isRequired,
+    clips: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            start: PropTypes.number.isRequired,
+            end: PropTypes.number.isRequired
+        })
+    ).isRequired
 }
 
 const mapStateToProps = state => ({
