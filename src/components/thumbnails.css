@@ -27,4 +27,12 @@
     box-shadow: 2px 2px 2px -2px black;
 }
 
+.rmThumbnail {
+    background: red;
+}
+
+.editThumbnail {
+    background: green;
+}
+
 
