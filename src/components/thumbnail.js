@@ -37,9 +37,19 @@ class CanvasThumbnail extends Component {
 
     render (){
         return (
-            <div className={styles.thumbnail}>
-                <div className={styles.rmThumbnail} onClick={this.removeThumbnail}> × </div>
-                <div className={styles.editThumbnail} onClick={this.editThumbnail}> ✏️ </div>
+            <div className={`${styles.thumbnail} ${ this.props.isPlaying ? styles.playing : '' }`}>
+                {this.props.id > 0 &&
+                    <div className={styles.thumbnailControls}>
+                        <div className={`${styles.editThumbnail} ${styles.thumbnailIcon}`}
+                            onClick={this.editThumbnail}>
+                            ✎
+                        </div>
+                        <div className={`${styles.rmThumbnail} ${styles.thumbnailIcon}`}
+                            onClick={this.removeThumbnail}>
+                            ×
+                        </div>
+                    </div>
+                }
                 <div className={styles.label}>
                     {Math.floor(this.props.clip.start)}
                 </div>
@@ -59,7 +69,8 @@ CanvasThumbnail.propTypes = {
     }).isRequired,
     jumpClick: PropTypes.func.isRequired,
     remove: PropTypes.func.isRequired,
-    edit: PropTypes.func.isRequired
+    edit: PropTypes.func.isRequired,
+    isPlaying: PropTypes.bool.isRequired
 }
 
 export default CanvasThumbnail;

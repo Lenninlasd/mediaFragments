@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import styles from '../styles/clipForm.css';
+
 class AddClip extends Component {
     constructor(props){
         super(props);
@@ -24,8 +26,8 @@ class AddClip extends Component {
 
     render(){
         return (
-            <form onSubmit={this.createClip}>
-                <input 
+            <form className={styles.formContainer} onSubmit={this.createClip} autoComplete='off'>
+                <input
                     type='text' 
                     name='name' 
                     placeholder='Name'
@@ -34,6 +36,7 @@ class AddClip extends Component {
                     required
                 />
                 <input
+                    className={styles.inputTime}
                     name='start' 
                     type='number' 
                     placeholder='0:00' 
@@ -41,7 +44,8 @@ class AddClip extends Component {
                     onChange={this.handleChange}
                     required
                 />
-                <input 
+                <input
+                    className={styles.inputTime}
                     name='end'
                     type='number'
                     placeholder='0:00'

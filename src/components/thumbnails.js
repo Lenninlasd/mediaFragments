@@ -1,10 +1,12 @@
 import React from 'react';
 import styles from '../styles/thumbnails.css';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import CanvasThumbnail from './thumbnail.js';
 
 const ThumbnailList = props => {
+    const status = props.reproStatus;
     const thumbnails = props.clips.map( (clip, index) => (
         <CanvasThumbnail
             key={clip.name+clip.start+clip.end}
@@ -14,6 +16,7 @@ const ThumbnailList = props => {
             jumpClick={props.jumpClick}
             remove={props.remove}
             edit={props.edit}
+            isPlaying={status.clipId === index && status.reproducing}
         />
     ));
 
@@ -22,6 +25,10 @@ const ThumbnailList = props => {
 
 ThumbnailList.propTypes = {
     video: PropTypes.object,
+    reproStatus: PropTypes.shape({
+        clipId: PropTypes.number.isRequired,
+        reproducing: PropTypes.bool.isRequired
+    }).isRequired,
     clips: PropTypes.arrayOf(
         PropTypes.shape({
             name: PropTypes.string.isRequired,
@@ -34,4 +41,8 @@ ThumbnailList.propTypes = {
     edit: PropTypes.func.isRequired
 }
 
-export default ThumbnailList;
+const mapStateToProps = state => ({
+    reproStatus: state.reproStatus
+});
+
+export default connect(mapStateToProps)(ThumbnailList);

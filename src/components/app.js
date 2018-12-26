@@ -16,6 +16,7 @@ class VideoApp extends React.Component {
         this.onCanPlay = this.onCanPlay.bind(this);
         this.removeThumnail = this.removeThumnail.bind(this);
         this.editThumnail = this.editThumnail.bind(this);
+        this.keyControls = this.keyControls.bind(this);
         this.videoref = React.createRef();
         this.shooting = false;
         this.updateId = null;
@@ -36,6 +37,7 @@ class VideoApp extends React.Component {
 
     jumpClick(ThumbnailId){
         const {start, end} = this.props.clips[ThumbnailId];
+        this.props.setReproClip(ThumbnailId);
         this.video.setAttribute('src', `${this.props.videoSrc}#t=${start},${end}`)
         this.video.load();
         this.video.play();
@@ -71,9 +73,27 @@ class VideoApp extends React.Component {
         this.updateId = id;
     }
 
+    keyControls(event){
+        if(!this.props.reproStatus.reproducing){
+            return;
+        }
+        const key = event.keyCode;
+        const clipId = this.props.reproStatus.clipId;
+        const maxId = this.props.clips.length - 1;
+
+        if( (key === 37 || key === 38) && clipId > 0){
+            this.jumpClick(clipId - 1);
+        }
+        else if( (key === 39 || key === 40) && clipId < maxId){
+            this.jumpClick(clipId + 1);
+        }
+    }
+
     render (){
         return (
-            <div className={styles.container}>
+            <div className={styles.container}
+                tabIndex='0'
+                onKeyDown={this.keyControls} >
                 <Thumbnails
                     video={this.video}
                     clips={this.props.clips}
@@ -81,7 +101,7 @@ class VideoApp extends React.Component {
                     remove={this.removeThumnail}
                     edit={this.editThumnail}
                 />
-                <div>
+                <div className={styles.videoContainer}>
                     <VideoPlayer
                         videoref={this.videoref}
                         src={this.props.videoSrc}
@@ -108,13 +128,18 @@ VideoApp.propTypes = {
             start: PropTypes.number.isRequired,
             end: PropTypes.number.isRequired
         })
-    ).isRequired
+    ).isRequired,
+    reproStatus: PropTypes.shape({
+        clipId: PropTypes.number.isRequired,
+        reproducing: PropTypes.bool.isRequired
+    }).isRequired,
 }
 
 const mapStateToProps = state => ({
     videoSrc: state.videoSrc,
     clips: state.clips,
-    currentClip: state.currentClip
+    currentClip: state.currentClip,
+    reproStatus: state.reproStatus
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -134,6 +159,10 @@ const mapDispatchToProps = dispatch => ({
     setCurrentClip: clip => dispatch({
         type: 'SET_CURRENT_CLIP',
         clip
+    }),
+    setReproClip: clipId => dispatch({
+        type: 'SET_REPRODUCING_CLIP',
+        clipId
     })
 });
 

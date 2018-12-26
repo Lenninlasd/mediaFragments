@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import styles from '../styles/videoPlayer.css'
+
 const VideoPlayer = props => {
     const t = `#t=${props.start},${props.end}`;
     const videoPath = props.start ? `${props.src}${t}` : props.src;
     return (
-        <video 
+        <video
+            className={styles.video}
             ref={props.videoref} 
             controls 
             src={ videoPath }
