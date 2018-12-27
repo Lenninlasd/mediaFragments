@@ -1,3 +1,25 @@
 .video {
     vertical-align: top;
 }
+
+.videoContainer {
+    position: relative;
+}
+
+.markerContainer {
+    background-color: transparent;
+    height: 0px;
+    position: absolute;
+    bottom: 0px;
+}
+
+.marker {
+    position: absolute;
+    z-index: 100;
+    background-color: red;
+    top: -35px;
+    height: 25px;
+    width: 0.2px;
+    box-shadow: 0px 0px 0px 1.5px red;
+    cursor: pointer;
+}

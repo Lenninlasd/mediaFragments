@@ -136,6 +136,7 @@ class VideoApp extends React.Component {
                             onCanPlay={this.onCanPlay}
                             width='800px'
                             onPause={this.onPauseClip}
+                            jumpClick={this.jumpClick}
                         />
                         <AddClip onShoot={this.shoot}/>
                     </div>
