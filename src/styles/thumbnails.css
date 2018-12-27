@@ -1,6 +1,5 @@
 .thumbnails {
     flex-direction: column;
-    background: #232323;
     padding: 4px;
     overflow: auto;
 }

@@ -9,6 +9,10 @@ export const reproStatus = (reproStatus, action) => {
             return Object.assign({}, reproStatus, {
                 reproducing: false
             })
+        case 'TOGGLE_WAIT':
+            return Object.assign({}, reproStatus, {
+                isWaiting: !reproStatus.isWaiting
+            })
         default:
             return reproStatus;
     }

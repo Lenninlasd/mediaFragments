@@ -15,6 +15,7 @@ const VideoPlayer = props => {
             width={props.width} 
             onLoadedData={props.onLoadedData}
             onCanPlay={props.onCanPlay}
+            onPause={props.onPause}
         />
     );
 };
@@ -27,6 +28,7 @@ VideoPlayer.propTypes = {
     videoref: PropTypes.object.isRequired,
     onLoadedData: PropTypes.func,
     onCanPlay: PropTypes.func,
+    onPause: PropTypes.func,
     width: PropTypes.string.isRequired
 };
 

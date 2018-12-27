@@ -1,5 +1,9 @@
 .formContainer {
-    padding: 20px;
+    padding: 12px;
+}
+
+.inputUrl {
+    width: 60%;
 }
 
 .formContainer input {

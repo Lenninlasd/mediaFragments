@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import VideoPlayer from './videoPlayer.js';
 import Thumbnails from './thumbnails.js';
 import AddClip from './clipForm.js';
+import ProgressBar from './progressBar.js'
+import LinkVideo from './linkVideo.js';
 import styles from '../styles/app.css';
 
 class VideoApp extends React.Component {
@@ -17,9 +19,11 @@ class VideoApp extends React.Component {
         this.removeThumnail = this.removeThumnail.bind(this);
         this.editThumnail = this.editThumnail.bind(this);
         this.keyControls = this.keyControls.bind(this);
+        this.onPauseClip = this.onPauseClip.bind(this);
         this.videoref = React.createRef();
         this.shooting = false;
         this.updateId = null;
+        this.timeOut = null;
     }
     
     onLoadedData(){
@@ -36,6 +40,7 @@ class VideoApp extends React.Component {
     }
 
     jumpClick(ThumbnailId){
+        clearTimeout(this.timeOut);
         const {start, end} = this.props.clips[ThumbnailId];
         this.props.setReproClip(ThumbnailId);
         this.video.setAttribute('src', `${this.props.videoSrc}#t=${start},${end}`)
@@ -89,27 +94,51 @@ class VideoApp extends React.Component {
         }
     }
 
+    onPauseClip(){
+        const status = this.props.reproStatus;
+        const maxId = this.props.clips.length - 1;
+        const endCurrentclip = this.props.clips[status.clipId].end;
+
+        if(!status.reproducing || endCurrentclip > this.video.currentTime){
+            return;
+        }
+        if(status.clipId < maxId){
+            this.props.toggleWaitClip();
+            this.timeOut = setTimeout( () => {
+                this.jumpClick(status.clipId + 1);
+                this.props.toggleWaitClip();
+            }, 3000);
+        }else {
+            this.props.stopClip();
+        }
+    }
+
     render (){
         return (
-            <div className={styles.container}
+            <div className={styles.appContainer}
                 tabIndex='0'
                 onKeyDown={this.keyControls} >
-                <Thumbnails
-                    video={this.video}
-                    clips={this.props.clips}
-                    jumpClick={this.jumpClick}
-                    remove={this.removeThumnail}
-                    edit={this.editThumnail}
-                />
-                <div className={styles.videoContainer}>
-                    <VideoPlayer
-                        videoref={this.videoref}
-                        src={this.props.videoSrc}
-                        onLoadedData={this.onLoadedData}
-                        onCanPlay={this.onCanPlay}
-                        width='800px'
+                <LinkVideo />
+                <div className={styles.container}>
+                    <Thumbnails
+                        video={this.video}
+                        clips={this.props.clips}
+                        jumpClick={this.jumpClick}
+                        remove={this.removeThumnail}
+                        edit={this.editThumnail}
                     />
-                    <AddClip onShoot={this.shoot}/>
+                    <div className={styles.videoContainer}>
+                        <ProgressBar isWaiting={this.props.reproStatus.isWaiting} />
+                        <VideoPlayer
+                            videoref={this.videoref}
+                            src={this.props.videoSrc}
+                            onLoadedData={this.onLoadedData}
+                            onCanPlay={this.onCanPlay}
+                            width='800px'
+                            onPause={this.onPauseClip}
+                        />
+                        <AddClip onShoot={this.shoot}/>
+                    </div>
                 </div>
             </div>
         );
@@ -131,8 +160,11 @@ VideoApp.propTypes = {
     ).isRequired,
     reproStatus: PropTypes.shape({
         clipId: PropTypes.number.isRequired,
-        reproducing: PropTypes.bool.isRequired
+        reproducing: PropTypes.bool.isRequired,
+        isWaiting: PropTypes.bool.isRequired
     }).isRequired,
+    setCurrentClip: PropTypes.func.isRequired,
+    stopClip: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
@@ -163,6 +195,12 @@ const mapDispatchToProps = dispatch => ({
     setReproClip: clipId => dispatch({
         type: 'SET_REPRODUCING_CLIP',
         clipId
+    }),
+    stopClip: () => dispatch({
+        type: 'STOP_CLIP'
+    }),
+    toggleWaitClip: () => dispatch({
+        type: 'TOGGLE_WAIT'
     })
 });
 

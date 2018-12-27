@@ -1,3 +1,9 @@
+.appContainer {
+    background: #232323;
+    outline: none;
+    border-radius: 4px;
+}
+
 .container {
     display: flex;
     outline: none;
