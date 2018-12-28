@@ -1,6 +1,7 @@
 /* inspired from From http://jsfiddle.net/RrAVS/ */
 .container {
     position: absolute;
+    z-index: 100;
 }
 .wrapper {
     position: relative;

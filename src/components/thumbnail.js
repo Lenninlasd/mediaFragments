@@ -35,6 +35,14 @@ class CanvasThumbnail extends Component {
         this.props.edit(this.props.id, this.props.clip);
     }
 
+    formatTime(time){
+        const hours = Math.floor(time / 3600);
+        const minutes = Math.floor( (time%3600) / 60);
+        const seconds = Math.floor(time % 60);
+        const format = `${minutes}:${seconds}`
+        return hours > 0 ? `${hours}:${format}` : format;
+    }
+
     render (){
         return (
             <div className={`${styles.thumbnail} ${ this.props.isPlaying ? styles.playing : '' }`}>
@@ -51,7 +59,10 @@ class CanvasThumbnail extends Component {
                     </div>
                 }
                 <div className={styles.label}>
-                    {Math.floor(this.props.clip.start)}
+                    {
+                       `${this.formatTime(this.props.clip.start)} /
+                        ${this.formatTime(this.props.clip.end)}`
+                    }
                 </div>
                 <canvas className={styles.canvas} ref="canvas" onClick={this.jumpEvent}/>
             </div>

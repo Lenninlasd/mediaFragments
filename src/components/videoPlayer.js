@@ -14,7 +14,7 @@ const TimeLineMarkers = props => {
         return (
             <div onClick={ () => props.jumpClick(index)}
                 style={{left}}
-                key={clip.name+clip.start}
+                key={clip.name+clip.start+clip.end}
                 className={styles.marker}>
             </div>
         );

@@ -8,10 +8,14 @@ export const reproStatus = (reproStatus, action) => {
         case 'STOP_CLIP':
             return Object.assign({}, reproStatus, {
                 reproducing: false
-            })
-        case 'TOGGLE_WAIT':
+            });
+        case 'SET_WAITING':
             return Object.assign({}, reproStatus, {
-                isWaiting: !reproStatus.isWaiting
+                isWaiting: true
+            });
+        case 'NO_WAITING':
+            return Object.assign({}, reproStatus, {
+                isWaiting: false
             })
         default:
             return reproStatus;
