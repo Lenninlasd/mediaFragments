@@ -80,7 +80,9 @@ class AddClip extends Component {
                         onChange={this.handleChange}
                         required
                     />
-                    <button type="submit">Clip</button>
+                    <button type="submit">
+                        { this.props.updateId ? 'Update' : 'Clip' }
+                    </button>
                 </form>
                 <button onClick={this.saveToLocalStorage}>Save</button>
             </div>
@@ -102,6 +104,7 @@ AddClip.propTypes = {
 }
 
 const mapStateToProps = state => ({
+    updateId: state.updateId,
     currentClip: state.currentClip,
     clips: state.clips
 });

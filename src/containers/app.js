@@ -11,13 +11,10 @@ class VideoApp extends Component {
         this.jumpClick = this.jumpClick.bind(this);
         this.onLoadedData = this.onLoadedData.bind(this);
         this.onCanPlay = this.onCanPlay.bind(this);
-        this.removeThumnail = this.removeThumnail.bind(this);
-        this.editThumnail = this.editThumnail.bind(this);
         this.keyControls = this.keyControls.bind(this);
         this.onPauseClip = this.onPauseClip.bind(this);
         this.videoref = React.createRef();
         this.shooting = false;
-        this.updateId = null;
         this.timeOut = null;
         this.iniClips = loadClipState();
     }
@@ -72,9 +69,9 @@ class VideoApp extends Component {
     onCanPlay(){
         if(!this.shooting) return;
 
-        if(this.updateId){
-            this.props.updateClip(this.updateId, this.props.currentClip);
-            this.updateId = null;
+        if(this.props.updateId){
+            this.props.updateClip(this.props.updateId, this.props.currentClip);
+            this.props.removeUpdateId();
         }
         else{
             this.props.addClip(this.props.currentClip);
@@ -84,15 +81,6 @@ class VideoApp extends Component {
         if(this.iniClips.state && !this.iniClips.state.done){
             this.iniClips.state = this.iniClips.gen.next();
         }
-    }
-
-    removeThumnail(id){
-        this.props.removeClip(id);
-    }
-
-    editThumnail(id, data){
-        this.props.setCurrentClip(data);
-        this.updateId = id;
     }
 
     keyControls(event){
@@ -137,8 +125,6 @@ class VideoApp extends Component {
                 video={this.video}
                 clips={this.props.clips}
                 jumpClick={this.jumpClick}
-                removeThumnail={this.removeThumnail}
-                editThumnail={this.editThumnail}
                 reproStatus={this.props.reproStatus}
                 videoref={this.videoref}
                 videoSrc={this.props.videoSrc}
@@ -152,6 +138,7 @@ class VideoApp extends Component {
 }
 
 const mapStateToProps = state => ({
+    updateId: state.updateId,
     videoSrc: state.videoSrc,
     clips: state.clips,
     currentClip: state.currentClip,
@@ -167,10 +154,6 @@ const mapDispatchToProps = dispatch => ({
         type: 'UPDATE_CLIP',
         id,
         data
-    }),
-    removeClip: id => dispatch({
-        type: 'REMOVE_CLIP',
-        id
     }),
     setCurrentClip: clip => dispatch({
         type: 'SET_CURRENT_CLIP',
@@ -188,6 +171,9 @@ const mapDispatchToProps = dispatch => ({
     }),
     noWaitClip: () => dispatch({
         type: 'NO_WAITING'
+    }),
+    removeUpdateId: () => dispatch({
+        type: 'REMOVE_UPDATE_ID'
     })
 });
 

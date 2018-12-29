@@ -18,8 +18,6 @@ const LayoutApp = props => (
                         video={props.video}
                         clips={props.clips}
                         jumpClick={props.jumpClick}
-                        remove={props.removeThumnail}
-                        edit={props.editThumnail}
                     />
                     <div className={styles.videoContainer}>
                         <ProgressBar isWaiting={props.reproStatus.isWaiting} />
@@ -43,7 +41,6 @@ LayoutApp.propTypes = {
     videoSrc: PropTypes.string.isRequired,
     video: PropTypes.object,
     videoref: PropTypes.object.isRequired,
-    removeThumnail: PropTypes.func.isRequired,
     clips: PropTypes.arrayOf(
         PropTypes.shape({
             name: PropTypes.string.isRequired,
@@ -57,7 +54,6 @@ LayoutApp.propTypes = {
         reproducing: PropTypes.bool.isRequired,
         isWaiting: PropTypes.bool.isRequired
     }).isRequired,
-    editThumnail: PropTypes.func.isRequired,
     onLoadedData: PropTypes.func.isRequired,
     onCanPlay: PropTypes.func.isRequired,
     onPauseClip: PropTypes.func.isRequired,

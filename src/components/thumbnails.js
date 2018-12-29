@@ -5,7 +5,14 @@ import { connect } from 'react-redux';
 
 import CanvasThumbnail from './thumbnail.js';
 
+
 const ThumbnailList = props => {
+
+    const editClip = (id, clip) => {
+        props.setCurrentClip(clip);
+        props.setUpdateId(id);
+    }
+
     const status = props.reproStatus;
     const thumbnails = props.clips.map( (clip, index) => (
         <CanvasThumbnail
@@ -14,8 +21,8 @@ const ThumbnailList = props => {
             video={props.video}
             clip={clip}
             jumpClick={props.jumpClick}
-            remove={props.remove}
-            edit={props.edit}
+            remove={props.removeClip}
+            edit={editClip}
             isPlaying={status.clipId === index && status.reproducing}
         />
     ));
@@ -37,12 +44,31 @@ ThumbnailList.propTypes = {
         })
     ).isRequired,
     jumpClick: PropTypes.func.isRequired,
-    remove: PropTypes.func.isRequired,
-    edit: PropTypes.func.isRequired
+    setCurrentClip: PropTypes.func.isRequired,
+    setUpdateId: PropTypes.func.isRequired,
+    removeClip: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
     reproStatus: state.reproStatus
 });
 
-export default connect(mapStateToProps)(ThumbnailList);
+const mapDispatchToProps = dispatch => ({
+    setCurrentClip: clip => dispatch({
+        type: 'SET_CURRENT_CLIP',
+        clip
+    }),
+    setUpdateId: updateId => dispatch({
+        type: 'SET_UPDATE_ID',
+        updateId
+    }),
+    removeClip: id => dispatch({
+        type: 'REMOVE_CLIP',
+        id
+    })
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ThumbnailList);
