@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import CanvasThumbnail from './thumbnail.js';
+import { setCurrentClip, setUpdateId, removeClip } from '../actions.js';
 
 
 const ThumbnailList = props => {
@@ -54,18 +55,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    setCurrentClip: clip => dispatch({
-        type: 'SET_CURRENT_CLIP',
-        clip
-    }),
-    setUpdateId: updateId => dispatch({
-        type: 'SET_UPDATE_ID',
-        updateId
-    }),
-    removeClip: id => dispatch({
-        type: 'REMOVE_CLIP',
-        id
-    })
+    setCurrentClip: clip     => dispatch(setCurrentClip(clip)),
+    setUpdateId:    updateId => dispatch(setUpdateId(updateId)),
+    removeClip:     id       => dispatch(removeClip(id))
 })
 
 export default connect(

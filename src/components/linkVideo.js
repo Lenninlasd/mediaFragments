@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import styles from '../styles/clipForm.css';
+import { setSrcVideo } from '../actions.js';
 
 const LinkVideo = props => {
 
@@ -37,10 +38,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    setSrcVideo: videoSrc => dispatch({
-        type: 'SET_SRC',
-        videoSrc
-    })
+    setSrcVideo: videoSrc => dispatch(setSrcVideo(videoSrc))
 })
 
 export default connect(

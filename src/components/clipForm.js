@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import { saveClipsState } from '../localStorage.js';
 import styles from '../styles/clipForm.css';
+import { setCurrentClip } from '../actions.js';
 
 class AddClip extends Component {
     constructor(props){
@@ -110,10 +111,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    setCurrentClip: clip => dispatch({
-        type: 'SET_CURRENT_CLIP',
-        clip
-    })
+    setCurrentClip: clip => dispatch(setCurrentClip(clip))
 });
 
 export default connect(

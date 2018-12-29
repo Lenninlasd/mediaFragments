@@ -4,6 +4,11 @@ import { connect } from 'react-redux';
 import { loadClipState } from '../localStorage.js';
 import LayautApp from '../components/app.js';
 
+import {
+    addClip, updateClip, setCurrentClip, setReproClip,
+    stopClip, setWaitClip, noWaitClip, removeUpdateId
+} from '../actions.js';
+
 class VideoApp extends Component {
     constructor (props){
         super(props);
@@ -146,35 +151,14 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    addClip: data => dispatch({
-        type: 'ADD_CLIP',
-        data
-    }),
-    updateClip: (id, data) => dispatch({
-        type: 'UPDATE_CLIP',
-        id,
-        data
-    }),
-    setCurrentClip: clip => dispatch({
-        type: 'SET_CURRENT_CLIP',
-        clip
-    }),
-    setReproClip: clipId => dispatch({
-        type: 'SET_REPRODUCING_CLIP',
-        clipId
-    }),
-    stopClip: () => dispatch({
-        type: 'STOP_CLIP'
-    }),
-    setWaitClip: () => dispatch({
-        type: 'SET_WAITING'
-    }),
-    noWaitClip: () => dispatch({
-        type: 'NO_WAITING'
-    }),
-    removeUpdateId: () => dispatch({
-        type: 'REMOVE_UPDATE_ID'
-    })
+    addClip:        data      => dispatch(addClip(data)),
+    updateClip:    (id, data) => dispatch(updateClip(id, data)),
+    setCurrentClip: clip      => dispatch(setCurrentClip(clip)),
+    setReproClip:   clipId    => dispatch(setReproClip(clipId)),
+    stopClip:       ()        => dispatch(stopClip()),
+    setWaitClip:    ()        => dispatch(setWaitClip()),
+    noWaitClip:     ()        => dispatch(noWaitClip()),
+    removeUpdateId: ()        => dispatch(removeUpdateId())
 });
 
 export default connect(
