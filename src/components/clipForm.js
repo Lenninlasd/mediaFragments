@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { saveClipsState } from '../localStorage.js';
 import styles from '../styles/clipForm.css';
 
 class AddClip extends Component {
@@ -9,6 +10,7 @@ class AddClip extends Component {
         super(props);
         this.createClip = this.createClip.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.saveToLocalStorage = this.saveToLocalStorage.bind(this);
     }
 
     createClip(event){
@@ -43,53 +45,65 @@ class AddClip extends Component {
         return hours > 0 ? `${hours}:${format}` : format;
     }
 
+    saveToLocalStorage(){
+        saveClipsState(this.props.clips);
+    }
+
     render(){
         return (
-            <form className={styles.formContainer} onSubmit={this.createClip} autoComplete='off'>
-                <input
-                    type='text'
-                    name='name'
-                    placeholder='Name'
-                    value={this.props.data.name}
-                    onChange={this.handleChange}
-                    required
-                />
-                <input
-                    className={styles.inputTime}
-                    name='start'
-                    type='text'
-                    placeholder='0:00'
-                    value={this.formatTime(this.props.data.start)}
-                    onChange={this.handleChange}
-                    required
-                />
-                <input
-                    className={styles.inputTime}
-                    name='end'
-                    type='text'
-                    placeholder='0:00'
-                    value={this.formatTime(this.props.data.end)}
-                    onChange={this.handleChange}
-                    required
-                />
-                <button type="submit">Clip</button>
-            </form>
+            <div className={styles.formContainer}>
+                <form onSubmit={this.createClip}
+                    autoComplete='off'>
+                    <input
+                        type='text'
+                        name='name'
+                        placeholder='Name'
+                        value={this.props.currentClip.name}
+                        onChange={this.handleChange}
+                        required
+                    />
+                    <input
+                        className={styles.inputTime}
+                        name='start'
+                        type='text'
+                        placeholder='0:00'
+                        value={this.formatTime(this.props.currentClip.start)}
+                        onChange={this.handleChange}
+                        required
+                    />
+                    <input
+                        className={styles.inputTime}
+                        name='end'
+                        type='text'
+                        placeholder='0:00'
+                        value={this.formatTime(this.props.currentClip.end)}
+                        onChange={this.handleChange}
+                        required
+                    />
+                    <button type="submit">Clip</button>
+                </form>
+                <button onClick={this.saveToLocalStorage}>Save</button>
+            </div>
         );
     }
 }
 
+const clipPropType = PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    start: PropTypes.number.isRequired,
+    end: PropTypes.number.isRequired
+}).isRequired
+
 AddClip.propTypes = {
     onShoot: PropTypes.func.isRequired,
     setCurrentClip: PropTypes.func.isRequired,
-    data: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        start: PropTypes.number.isRequired,
-        end: PropTypes.number.isRequired
-    }).isRequired
+    currentClip: clipPropType,
+    clips: PropTypes.arrayOf(clipPropType).isRequired
 }
 
 const mapStateToProps = state => ({
-    data: state.currentClip
+    currentClip: state.currentClip,
+    clips: state.clips
 });
 
 const mapDispatchToProps = dispatch => ({
