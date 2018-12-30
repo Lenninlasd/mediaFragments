@@ -1,11 +1,12 @@
 .thumbnails {
     flex-direction: column;
-    padding: 4px;
-    overflow: auto;
+    overflow-y: auto;
+    min-width: 100px;
+    padding-right: 6px;
 }
 
 .thumbnail {
-    margin: 6px;
+    margin: 0px 0px 6px 0px;
     position: relative;
 }
 

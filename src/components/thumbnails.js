@@ -14,6 +14,8 @@ const ThumbnailList = props => {
         props.setUpdateId(id);
     }
 
+    const maxHeight = props.video ? props.video.clientHeight : null;
+
     const status = props.reproStatus;
     const thumbnails = props.clips.map( (clip, index) => (
         <CanvasThumbnail
@@ -28,7 +30,11 @@ const ThumbnailList = props => {
         />
     ));
 
-    return  <div className={styles.thumbnails}>{ thumbnails }</div>;
+    return  (
+        <div style={{maxHeight}} className={styles.thumbnails}>
+            { thumbnails }
+        </div>
+    );
 };
 
 ThumbnailList.propTypes = {
@@ -51,7 +57,8 @@ ThumbnailList.propTypes = {
 }
 
 const mapStateToProps = state => ({
-    reproStatus: state.reproStatus
+    reproStatus: state.reproStatus,
+    clips: state.clips
 });
 
 const mapDispatchToProps = dispatch => ({

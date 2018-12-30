@@ -128,9 +128,7 @@ class VideoApp extends Component {
             <LayautApp
                 keyControls={this.keyControls}
                 video={this.video}
-                clips={this.props.clips}
                 jumpClick={this.jumpClick}
-                reproStatus={this.props.reproStatus}
                 videoref={this.videoref}
                 videoSrc={this.props.videoSrc}
                 onLoadedData={this.onLoadedData}

@@ -8,6 +8,10 @@ import App from './containers/app.js';
 
 import initialState from './initialState.js';
 
+if(window.self !== window.top) {
+    initialState.endableEditing = false;
+}
+
 const store = createStore(
     rootReducer, initialState
 );

@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import styles from '../styles/thumbnails.css';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
+import styles from '../styles/thumbnails.css';
 
 class CanvasThumbnail extends Component {
 
     constructor (props){
         super(props);
         this.resize = 0.15;
+        this.minWidth = 100;
         this.jumpEvent = this.jumpEvent.bind(this);
         this.removeThumbnail = this.removeThumbnail.bind(this);
         this.editThumbnail = this.editThumbnail.bind(this);
@@ -16,8 +19,15 @@ class CanvasThumbnail extends Component {
         const canvas = this.refs.canvas;
         const ctx = canvas.getContext('2d');
         const {clientWidth, clientHeight} = this.props.video;
-        const w = clientWidth*this.resize;
-        const h = clientHeight*this.resize;
+        const ratio = this.props.video.videoHeight/this.props.video.videoWidth;
+
+        let w = clientWidth*this.resize;
+        let h = clientHeight*this.resize;
+        if(w < this.minWidth){
+            w = this.minWidth;
+            h = this.minWidth * ratio;
+        }
+
         this.refs.canvas.width = w;
         this.refs.canvas.height = h;
         ctx.drawImage( this.props.video, 0, 0, w, h );
@@ -46,7 +56,7 @@ class CanvasThumbnail extends Component {
     render (){
         return (
             <div className={`${styles.thumbnail} ${ this.props.isPlaying ? styles.playing : '' }`}>
-                {this.props.id > 0 &&
+                {this.props.id > 0 && this.props.endableEditing &&
                     <div className={styles.thumbnailControls}>
                         <div className={`${styles.editThumbnail} ${styles.thumbnailIcon}`}
                             onClick={this.editThumbnail}>
@@ -81,7 +91,14 @@ CanvasThumbnail.propTypes = {
     jumpClick: PropTypes.func.isRequired,
     remove: PropTypes.func.isRequired,
     edit: PropTypes.func.isRequired,
-    isPlaying: PropTypes.bool.isRequired
+    isPlaying: PropTypes.bool.isRequired,
+    endableEditing: PropTypes.bool.isRequired
 }
 
-export default CanvasThumbnail;
+const mapStateToProps = state => ({
+    endableEditing: state.endableEditing
+});
+
+export default connect(
+    mapStateToProps
+)(CanvasThumbnail);

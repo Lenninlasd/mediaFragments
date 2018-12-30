@@ -6,7 +6,7 @@ import styles from '../styles/videoPlayer.css';
 
 const TimeLineMarkers = props => {
     const margin = 32;
-    const width = Number(props.width.split('px')[0]) - 2*margin;
+    const width = props.width - 2*margin;
     const totalTime = props.clips.length ? props.clips[0].end : 0;
 
     const listMarkers = props.clips.map( (clip, index) => {
@@ -31,10 +31,23 @@ const TimeLineMarkers = props => {
 const VideoPlayer = props => {
     const t = `#t=${props.start},${props.end}`;
     const videoPath = props.start ? `${props.src}${t}` : props.src;
+    const minWidthPadding = 2*8+6+100;
+    const minHeightPadding = 4*8+ 47;
+    const { innerWidth, innerHeight } = window;
+
+    let videoWidth = props.width;
+    let videoHeight = props.height;
+    if(props.width > innerWidth - minWidthPadding){
+        videoWidth = innerWidth - minWidthPadding;
+    }
+    if(props.height > innerHeight - minHeightPadding){
+        videoHeight = innerHeight - minHeightPadding;
+    }
+
     return (
         <div className={styles.videoContainer}>
             <TimeLineMarkers 
-                width={props.width} 
+                width={videoWidth} 
                 clips={props.clips}
                 jumpClick={props.jumpClick}
             />
@@ -44,7 +57,8 @@ const VideoPlayer = props => {
                 controls
                 preload='auto'
                 src={ videoPath }
-                width={props.width} 
+                width={videoWidth}
+                height={videoHeight}
                 onLoadedData={props.onLoadedData}
                 onCanPlay={props.onCanPlay}
                 onPause={props.onPause}
@@ -54,7 +68,7 @@ const VideoPlayer = props => {
 };
 
 TimeLineMarkers.propTypes = {
-    width: PropTypes.string.isRequired,
+    width: PropTypes.number.isRequired,
     clips: PropTypes.arrayOf(
         PropTypes.shape({
             name: PropTypes.string.isRequired,
@@ -77,7 +91,8 @@ VideoPlayer.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    clips: state.clips
+    clips: state.clips,
+    src: state.videoSrc
 });
 
 export default connect(

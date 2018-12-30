@@ -51,7 +51,7 @@ class AddClip extends Component {
     }
 
     render(){
-        return (
+        return this.props.endableEditing && (
             <div className={styles.formContainer}>
                 <form onSubmit={this.createClip}
                     autoComplete='off'>
@@ -98,6 +98,7 @@ const clipPropType = PropTypes.shape({
 }).isRequired
 
 AddClip.propTypes = {
+    endableEditing: PropTypes.bool.isRequired,
     onShoot: PropTypes.func.isRequired,
     setCurrentClip: PropTypes.func.isRequired,
     currentClip: clipPropType,
@@ -105,6 +106,7 @@ AddClip.propTypes = {
 }
 
 const mapStateToProps = state => ({
+    endableEditing: state.endableEditing,
     updateId: state.updateId,
     currentClip: state.currentClip,
     clips: state.clips

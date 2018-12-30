@@ -1,4 +1,6 @@
 .appContainer {
+    display: inline-block;
+    padding: 8px;
     background: #232323;
     outline: none;
     border-radius: 4px;
@@ -8,9 +10,4 @@
 .container {
     display: flex;
     outline: none;
-}
-
-.videoContainer {
-    padding: 2px;
-    background: #232323;
 }
