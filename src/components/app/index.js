@@ -1,13 +1,13 @@
 import React, { Component } from 'react'; 
 import { connect } from 'react-redux';
 
-import { loadClipState } from '../localStorage.js';
-import LayautApp from '../components/app.js';
+import { loadClipState } from '../../localStorage.js';
+import LayautApp from './layoutApp.js';
 
 import {
     addClip, updateClip, setCurrentClip, setReproClip,
     stopClip, setWaitClip, noWaitClip, removeUpdateId
-} from '../actions.js';
+} from '../../actions.js';
 
 class VideoApp extends Component {
     constructor (props){

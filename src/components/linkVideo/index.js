@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import styles from '../styles/clipForm.css';
-import { setSrcVideo } from '../actions.js';
+import styles from '../clipForm/clipForm.css';
+import { setSrcVideo } from '../../actions.js';
 
 const LinkVideo = props => {
 

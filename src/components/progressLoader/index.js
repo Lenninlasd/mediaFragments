@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import styles from '../styles/progressLoader.css';
+import styles from './progressLoader.css';
 import PropTypes from 'prop-types';
 
 const ProgressLoader = props => {

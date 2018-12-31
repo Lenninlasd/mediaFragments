@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import VideoPlayer from './videoPlayer.js';
-import Thumbnails from './thumbnails.js';
-import AddClip from './clipForm.js';
-import ProgressLoader from './progressLoader.js'
-import LinkVideo from './linkVideo.js';
-import styles from '../styles/app.css';
+import VideoPlayer from '../videoPlayer/';
+import Thumbnails from '../thumbnails/';
+import AddClip from '../clipForm/';
+import ProgressLoader from '../progressLoader/'
+import LinkVideo from '../linkVideo/';
+import styles from './app.css';
 
 const LayoutApp = props => (
     <div className={styles.appContainer}
@@ -24,8 +24,8 @@ const LayoutApp = props => (
                     videoref={props.videoref}
                     onLoadedData={props.onLoadedData}
                     onCanPlay={props.onCanPlay}
-                    width='800'
-                    height='450'
+                    width={800}
+                    height={450}
                     onPause={props.onPauseClip}
                     jumpClick={props.jumpClick}
                 />

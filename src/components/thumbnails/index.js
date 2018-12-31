@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import CanvasThumbnail from './thumbnail.js';
-import { setCurrentClip, setUpdateId, removeClip } from '../actions.js';
-import styles from '../styles/thumbnails.css';
+import { setCurrentClip, setUpdateId, removeClip } from '../../actions.js';
+import styles from './thumbnails.css';
 
 class ThumbnailList extends Component {
     constructor(props){

@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { saveClipsState } from '../localStorage.js';
-import styles from '../styles/clipForm.css';
-import { setCurrentClip } from '../actions.js';
+import { saveClipsState } from '../../localStorage.js';
+import styles from './clipForm.css';
+import { setCurrentClip } from '../../actions.js';
 
 class AddClip extends Component {
     constructor(props){

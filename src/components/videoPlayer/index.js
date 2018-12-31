@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import styles from '../styles/videoPlayer.css';
+import styles from './videoPlayer.css';
 
 const TimeLineMarkers = props => {
     const margin = 2;
@@ -87,7 +87,7 @@ VideoPlayer.propTypes = {
     onLoadedData: PropTypes.func,
     onCanPlay: PropTypes.func,
     onPause: PropTypes.func,
-    width: PropTypes.string.isRequired
+    width: PropTypes.number.isRequired
 };
 
 const mapStateToProps = state => ({

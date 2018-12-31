@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import styles from '../styles/thumbnails.css';
+import styles from './thumbnails.css';
 
 class CanvasThumbnail extends Component {
 
