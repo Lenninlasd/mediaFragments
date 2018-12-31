@@ -2,15 +2,17 @@
     flex-direction: column;
     overflow-y: auto;
     min-width: 100px;
+    max-width: 120px;
     padding-right: 6px;
 }
 
 .thumbnail {
     margin: 0px 0px 6px 0px;
     position: relative;
+    padding: 6px 2px;
 }
 
-.thumbnail.playing {
+.thumbnail.playing canvas {
     box-shadow: 0px 0px 4px 1px #1892f5;
 }
 
@@ -20,10 +22,30 @@
     background: hsla(0, 0%, 7%, 0.7);
     padding: 2px;
     border-radius: 2px;
-    font-family: Roboto, Arial, sans-serif;
-    font-size: 0.8rem;
-    bottom: 2px;
+    font-size: 0.7rem;
+    bottom: 6px;
     left: 2px;
+}
+
+.thumbnail abbr{
+    text-decoration-color: #ffffff1f;
+}
+
+.thumbnail .tagContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.thumbnail .clipTag {
+    background: #717171;
+    font-size: 0.6rem;
+    padding: 1px;
+    margin: 1px;
+    border-radius: 2px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100px;
 }
 
 .thumbnail .canvas {
@@ -32,9 +54,19 @@
     box-shadow: 2px 2px 2px -2px black;
 }
 
+.thumbnailTitle {
+    font-size: 0.8rem;
+    color: #e0e0e0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 112px;
+    padding: 2px;
+}
+
 .thumbnailControls {
     position: absolute;
-    right: 0;
+    left: 0;
     display: flex;
     padding: 2px;
 }
@@ -43,9 +75,9 @@
     padding: 1px;
     margin: 2px;
     border-radius: 12px;
-    width: 20px;
+    width: 18px;
     text-align: center;
-    height: 20px;
+    height: 18px;
     cursor: pointer;
     background: #303030a1;
     color: #dcdcdc;
@@ -56,3 +88,13 @@
     background: black;
 }
 
+.thumbnailsFilter {
+    outline: none;
+    background-color: #121212;
+    color: rgba(255, 255, 255, 0.88);
+    border: none;
+    border-radius: .25rem;
+    box-shadow: inset 0 1px 2px #303030;
+    padding: 10px 4px;
+    height: 12px;
+}

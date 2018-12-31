@@ -1,40 +1,70 @@
-import React from 'react';
-import styles from '../styles/thumbnails.css';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import CanvasThumbnail from './thumbnail.js';
 import { setCurrentClip, setUpdateId, removeClip } from '../actions.js';
+import styles from '../styles/thumbnails.css';
 
-
-const ThumbnailList = props => {
-
-    const editClip = (id, clip) => {
-        props.setCurrentClip(clip);
-        props.setUpdateId(id);
+class ThumbnailList extends Component {
+    constructor(props){
+        super(props);
+        this.editClip = this.editClip.bind(this);
+        this.changeFilter = this.changeFilter.bind(this);
+        this.state = { filerTag: '' };
     }
 
-    const maxHeight = props.video ? props.video.clientHeight : null;
+    editClip(id, clip) {
+        this.props.setCurrentClip(clip);
+        this.props.setUpdateId(id);
+    }
 
-    const status = props.reproStatus;
-    const thumbnails = props.clips.map( (clip, index) => (
-        <CanvasThumbnail
-            key={clip.name+clip.start+clip.end}
-            id={index}
-            video={props.video}
-            clip={clip}
-            jumpClick={props.jumpClick}
-            remove={props.removeClip}
-            edit={editClip}
-            isPlaying={status.clipId === index && status.reproducing}
-        />
-    ));
+    createThumbnails(){
+        const { clipId, reproducing } = this.props.reproStatus;
 
-    return  (
-        <div style={{maxHeight}} className={styles.thumbnails}>
-            { thumbnails }
-        </div>
-    );
+        return this.props.clips
+            .filter( clip => (
+                this.state.filerTag === '' ? true :
+                clip.tags.includes(this.state.filerTag)
+            ))
+            .map( (clip, index) => (
+                <CanvasThumbnail
+                    key={clip.name+clip.start+clip.end}
+                    id={index}
+                    video={this.props.video}
+                    clip={clip}
+                    jumpClick={this.props.jumpClick}
+                    remove={this.props.removeClip}
+                    edit={this.editClip}
+                    isPlaying={clipId === index && reproducing}
+                />
+            ));
+    }
+
+    changeFilter(event){
+        this.setState({
+            filerTag: event.target.value.toLowerCase()
+        })
+    }
+
+    render(){
+        const maxHeight = this.props.video ?
+            this.props.video.clientHeight - 32 : null;
+        return  (
+            <div>
+                <input type='text'
+                    className={styles.thumbnailsFilter}
+                    name='filter'
+                    placeholder='Filter thumbnail'
+                    onChange={this.changeFilter}
+                    value={this.state.filerTag}
+                />
+                <div style={{maxHeight}} className={styles.thumbnails}>
+                    { this.createThumbnails() }
+                </div>
+            </div>
+        );
+    }
 };
 
 ThumbnailList.propTypes = {

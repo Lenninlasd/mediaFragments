@@ -21,7 +21,8 @@ class AddClip extends Component {
 
     handleChange(event){
         const tg = event.target;
-        const value = tg.name === 'name' ? tg.value : this.formatedTextToSeconds(tg.value);
+        const value = ['name', 'tags'].includes(tg.name) ?
+                       tg.value : this.formatedTextToSeconds(tg.value);
         this.props.setCurrentClip({
             [tg.name]: value
         });
@@ -81,6 +82,14 @@ class AddClip extends Component {
                         onChange={this.handleChange}
                         required
                     />
+                    <input
+                        title='Add tags with comma (,) separated values'
+                        name='tags'
+                        type='text'
+                        placeholder='tag1, tag2...'
+                        value={this.props.currentClip.tags}
+                        onChange={this.handleChange}
+                    />
                     <button type="submit">
                         { this.props.updateId ? 'Update' : 'Clip' }
                     </button>
@@ -106,6 +115,7 @@ AddClip.propTypes = {
 }
 
 const mapStateToProps = state => ({
+    videoSrc: state.videoSrc,
     endableEditing: state.endableEditing,
     updateId: state.updateId,
     currentClip: state.currentClip,

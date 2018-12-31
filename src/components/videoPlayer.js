@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styles from '../styles/videoPlayer.css';
 
 const TimeLineMarkers = props => {
-    const margin = 32;
+    const margin = 2;
     const width = props.width - 2*margin;
     const totalTime = props.clips.length ? props.clips[0].end : 0;
 
@@ -31,8 +31,8 @@ const TimeLineMarkers = props => {
 const VideoPlayer = props => {
     const t = `#t=${props.start},${props.end}`;
     const videoPath = props.start ? `${props.src}${t}` : props.src;
-    const minWidthPadding = 2*8+6+100;
-    const minHeightPadding = 4*8+ 47;
+    const minWidthPadding = 2*8+6+120;
+    const minHeightPadding = 4*8+ 43;
     const { innerWidth, innerHeight } = window;
 
     let videoWidth = props.width;

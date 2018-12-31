@@ -9,7 +9,7 @@ class CanvasThumbnail extends Component {
     constructor (props){
         super(props);
         this.resize = 0.15;
-        this.minWidth = 100;
+        this.width = 120;
         this.jumpEvent = this.jumpEvent.bind(this);
         this.removeThumbnail = this.removeThumbnail.bind(this);
         this.editThumbnail = this.editThumbnail.bind(this);
@@ -18,19 +18,12 @@ class CanvasThumbnail extends Component {
     componentDidMount(){
         const canvas = this.refs.canvas;
         const ctx = canvas.getContext('2d');
-        const {clientWidth, clientHeight} = this.props.video;
         const ratio = this.props.video.videoHeight/this.props.video.videoWidth;
+        const height =  this.width * ratio;
 
-        let w = clientWidth*this.resize;
-        let h = clientHeight*this.resize;
-        if(w < this.minWidth){
-            w = this.minWidth;
-            h = this.minWidth * ratio;
-        }
-
-        this.refs.canvas.width = w;
-        this.refs.canvas.height = h;
-        ctx.drawImage( this.props.video, 0, 0, w, h );
+        this.refs.canvas.width = this.width;
+        this.refs.canvas.height = height;
+        ctx.drawImage( this.props.video, 0, 0, this.width,  height);
     }
 
     jumpEvent(){
@@ -53,18 +46,31 @@ class CanvasThumbnail extends Component {
         return hours > 0 ? `${hours}:${format}` : format;
     }
 
+    tagContainer(tagList){
+        return tagList.split(',').filter(t => t !== '').map( (tag, i) => (
+            <div key={tag+i} className={styles.clipTag}>{tag.trim()}</div>
+        ));
+    }
+
     render (){
         return (
             <div className={`${styles.thumbnail} ${ this.props.isPlaying ? styles.playing : '' }`}>
+
+                <div className={styles.thumbnailTitle}>
+                    <abbr title={this.props.clip.name}>{this.props.clip.name}</abbr>
+                </div>
+                <div className={styles.tagContainer}>
+                    {this.tagContainer(this.props.clip.tags)}
+                </div>
                 {this.props.id > 0 && this.props.endableEditing &&
                     <div className={styles.thumbnailControls}>
-                        <div className={`${styles.editThumbnail} ${styles.thumbnailIcon}`}
-                            onClick={this.editThumbnail}>
-                            ✎
-                        </div>
                         <div className={`${styles.rmThumbnail} ${styles.thumbnailIcon}`}
                             onClick={this.removeThumbnail}>
                             ×
+                        </div>
+                        <div className={`${styles.editThumbnail} ${styles.thumbnailIcon}`}
+                            onClick={this.editThumbnail}>
+                            ✎
                         </div>
                     </div>
                 }
